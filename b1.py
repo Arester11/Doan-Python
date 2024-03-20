@@ -10,3 +10,11 @@ print(6/9)
 print(16//24, "chia lay du (%)")
 '''cau f'''
 print("khong chia cho 0 duoc")
+'''cau f'''
+print("khong chia cho 0 duoc")
+'''cau f'''
+print("khong chia cho 0 duoc")
+'''cau f'''
+print("khong chia cho 0 duoc")
+'''cau f'''
+print("khong chia cho 0 duoc")
