@@ -17,4 +17,4 @@ print("khong chia cho 0 duoc")
 '''cau f'''
 print("khong chia cho 0 duoc")
 '''cau f'''
-print("khong chia cho 0 duoc")
+print("Phú gà vãi cả bíp non vê nờ")
