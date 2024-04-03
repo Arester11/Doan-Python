@@ -82,6 +82,7 @@ class Editor:
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
+                    self.tilemap.save('map.json')
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -127,6 +128,8 @@ class Editor:
                         self.tilemap.save('map.json')
                     if event.key == pygame.K_LSHIFT:
                         self.shift = True
+                        
+                
                 if event.type ==pygame.KEYUP:
                     if event.key==pygame.K_a:
                         self.movement[0] = False
