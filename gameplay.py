@@ -157,6 +157,7 @@ class Game:
             self.clock.tick(60)
 
 Game().run()
+asaasdas
 
 
     
