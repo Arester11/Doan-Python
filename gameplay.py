@@ -71,10 +71,16 @@ class Game:
         self.sparks = []
 
         self.scroll = [0,0]
+        self.dead = 0
 
     def run(self):
         while True:
             self.display.blit(self.assets['background'],(0,0))
+
+            if self.dead:
+                self.dead+=1
+                if self.dead > 40:
+                    self.load_level(0)
 
             self.scroll[0]+=(self.player.rect().centerx - self.display.get_width()/2 - self.scroll[0])/30
             self.scroll[1]+=(self.player.rect().centery - self.display.get_height()/2 - self.scroll[1])/30
@@ -110,14 +116,16 @@ class Game:
                 elif abs(self.player.dashing)<50:
                     if self.player.rect().collidepoint(projectile[0]):
                         self.projectiles.remove(projectile)
+                        self.dead += 1
                         for i in range(30):
                             angle = random.random() * math.pi *2
                             speed = random.random()*5
                             self.sparks.append(Spark(self.player.rect().center,angle,2 + random.random()))
                             self.particles.append(Particle(self,'particle',self.player.rect().center,velocity=[math.cos(angle+angle+math.pi)*speed*0.5,math.sin(angle + math.pi)*speed*0.5],frame=random.randint(0,7)))
 
-            self.player.update(self.tilemap,(self.movement[1]-self.movement[0],0))
-            self.player.render(self.display,offset=render_scroll)
+            if not self.dead:
+                self.player.update(self.tilemap,(self.movement[1]-self.movement[0],0))
+                self.player.render(self.display,offset=render_scroll)
 
             for spark in self.sparks.copy():
                 kill = spark.update()
@@ -157,7 +165,6 @@ class Game:
             self.clock.tick(60)
 
 Game().run()
-asaasdas
 
 
-    
+    #sldkfj
