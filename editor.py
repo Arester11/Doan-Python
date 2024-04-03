@@ -29,7 +29,7 @@ class Editor:
         self.tilemap = Tilemap(self,tile_size=16)
 
         try:
-            self.tilemap.load('map.json')
+            self.tilemap.load('data/maps/0.json')
         except FileNotFoundError:
             pass
 
@@ -82,7 +82,7 @@ class Editor:
             
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    self.tilemap.save('map.json')
+                    self.tilemap.save('data/maps/0.json')
                     pygame.quit()
                     sys.exit()
                 if event.type == pygame.MOUSEBUTTONDOWN:
