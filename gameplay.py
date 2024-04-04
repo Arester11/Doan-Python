@@ -9,6 +9,7 @@ from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
+from scripts.button import Button
 
 class Game:
     def __init__(self):
@@ -187,5 +188,32 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
 
-Game().run()
+#menu
+    click = False
 
+    def game_menu(self):
+        while True:
+            
+            self.display.blit(self.assets['background'],(0,0))
+            
+            #khai bao nut
+            resume_img = pygame.image.load('data/images/button/button_resume.png').convert_alpha()
+            quit_img = pygame.image.load('data/images/button/button_quit.png').convert_alpha()
+            resume_button = Button(320, 100, resume_img, 0.5)
+            quit_button = Button(320, 200, quit_img, 0.5)
+            
+            #ve nut
+            resume_button.draw(self.screen)
+            quit_button.draw(self.screen)
+            
+            for event in pygame.event.get():
+                
+
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                    
+            pygame.display.update()
+            
+#chay dong nay de test menu Game().game_menu()
+Game().run()
