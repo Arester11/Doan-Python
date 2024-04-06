@@ -84,7 +84,8 @@ class Game:
 
     def run(self):
         paused = False
-        while True:
+        run = True
+        while run:
             self.display.fill((0,0,0,0))
             self.display_2.blit(self.assets['background'],(0,0))
 
@@ -194,8 +195,7 @@ class Game:
                         if paused:
                             result = pause_game(self.screen)
                             if result == "quit":
-                                pygame.quit()
-                                sys.exit()
+                                run = False
                             elif result == "resume":
                                 paused = False     
             if self.transition:
@@ -220,33 +220,50 @@ def main_menu():
     screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Ninja")
 
+    start = (0, 0, 0)
+    quit = (0, 0, 0)
     font = pygame.font.Font(pygame.font.get_default_font(), 50)
 
     running = True
     while running:
 
         screen.fill((255, 255, 255))
-        start_text = font.render("Start", True, (0, 0, 0))
+        start_text = font.render("Start", True, start)
         start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
         screen.blit(start_text, start_rect)
-        quit_text = font.render("Quit", True, (0, 0, 0))
+        quit_text = font.render("Quit", True, quit)
         quit_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
         screen.blit(quit_text, quit_rect)
         pygame.display.update()
 
         for event in pygame.event.get():
+            mouse_pos = pygame.mouse.get_pos()
+            
             if event.type == pygame.QUIT:
                 running = False
                 pygame.quit()
                 sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                if start_rect.collidepoint(mouse_pos):
+            
+            if start_rect.collidepoint(mouse_pos):
+                
+                start = (150, 150, 150)
+                
+                if pygame.mouse.get_pressed()[0]:
                     Game().run()
-                elif quit_rect.collidepoint(mouse_pos):
+            else:
+                start = (0, 0, 0)        
+            
+            if quit_rect.collidepoint(mouse_pos):
+                
+                quit = (150, 150, 150)
+                
+                if pygame.mouse.get_pressed()[0]:
                     running = False
                     pygame.quit()
                     sys.exit()
+            else:
+                quit = (0, 0, 0)
+                    
 
 if __name__ == "__main__":
     pygame.init()
