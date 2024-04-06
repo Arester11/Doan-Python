@@ -11,6 +11,7 @@ from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
 from scripts.button import Button
+from scripts.pausegame import pause_game
 
 class Game:
     def __init__(self):
@@ -82,6 +83,7 @@ class Game:
         self.transition = -30
 
     def run(self):
+        paused = False
         while True:
             self.display.fill((0,0,0,0))
             self.display_2.blit(self.assets['background'],(0,0))
@@ -186,7 +188,16 @@ class Game:
                         self.movement[0] = False
                     if event.key==pygame.K_d:
                         self.movement[1]=False
-
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        paused = not paused 
+                        if paused:
+                            result = pause_game(self.screen)
+                            if result == "quit":
+                                pygame.quit()
+                                sys.exit()
+                            elif result == "resume":
+                                paused = False     
             if self.transition:
                 transition_surf = pygame.Surface(self.display.get_size())
                 pygame.draw.circle(transition_surf,(255,255,255),(self.display.get_width()//2,self.display.get_height()//2),(30-abs(self.transition))*8)
@@ -198,34 +209,48 @@ class Game:
             screenskake_offset = (random.random()*self.screenshake - self.screenshake / 2,random.random()*self.screenshake - self.screenshake / 2)
             self.screen.blit(pygame.transform.scale(self.display_2,self.screen.get_size()),(screenskake_offset))
             pygame.display.update()
-            self.clock.tick(60)
+            self.clock.tick(90)
 
 #menu
-    click = False
+   
+def main_menu():
+    
+    WIDTH, HEIGHT = 640,480
+    WINDOW_SIZE = (WIDTH, HEIGHT)
+    screen = pygame.display.set_mode(WINDOW_SIZE)
+    pygame.display.set_caption("Ninja")
 
-    def game_menu(self):
-        while True:
-            
-            self.display.blit(self.assets['background'],(0,0))
-            
-            #khai bao nut
-            resume_img = pygame.image.load('data/images/button/button_resume.png').convert_alpha()
-            quit_img = pygame.image.load('data/images/button/button_quit.png').convert_alpha()
-            resume_button = Button(320, 100, resume_img, 0.5)
-            quit_button = Button(320, 200, quit_img, 0.5)
-            
-            #ve nut
-            resume_button.draw(self.screen)
-            quit_button.draw(self.screen)
-            
-            for event in pygame.event.get():
-                
+    font = pygame.font.Font(pygame.font.get_default_font(), 50)
 
-                if event.type == pygame.QUIT:
+    running = True
+    while running:
+
+        screen.fill((255, 255, 255))
+        start_text = font.render("Start", True, (0, 0, 0))
+        start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
+        screen.blit(start_text, start_rect)
+        quit_text = font.render("Quit", True, (0, 0, 0))
+        quit_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
+        screen.blit(quit_text, quit_rect)
+        pygame.display.update()
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                if start_rect.collidepoint(mouse_pos):
+                    Game().run()
+                elif quit_rect.collidepoint(mouse_pos):
+                    running = False
                     pygame.quit()
                     sys.exit()
-                    
-            pygame.display.update()
-            
-#chay dong nay de test menu Game().game_menu()
-Game().run()
+
+if __name__ == "__main__":
+    pygame.init()
+    # Mở menu chính
+    main_menu()
+# Game().game_menu()
+# Game().run()
