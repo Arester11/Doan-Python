@@ -92,11 +92,14 @@ class Game:
 
             self.screenshake = max(0,self.screenshake - 1)
 
-            if not len(self.enemies):
+            if len(self.enemies):
                 self.transition+=1
                 if self.transition > 30:
                     self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
-                    self.load_level(self.level)
+                    if self.level == 1:
+                        endgame(self.screen, self.WINDOW_SIZE)
+                    else:
+                        self.load_level(self.level)
             if self.transition<0:
                 self.transition+=1
 
@@ -212,8 +215,29 @@ class Game:
             pygame.display.update()
             self.clock.tick(60)
 
+def endgame(screen, WINDOW_SIZE):
+    screen.fill((255, 255, 255))
+    font = pygame.font.Font(pygame.font.get_default_font(), 50)
+    
+    return_text = font.render("Start", True, (0, 0, 0))
+    you_win_text = font.render("YOU WIN!!!", True, (0, 0, 0))
+    
+    return_rect = return_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 - 50))
+    you_win_rect = you_win_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 + 50))
+    
+    screen.blit(you_win_text, return_rect)
+    screen.blit(return_text, you_win_rect)
+    
+    
+    
+    while True:
+        
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+            pygame.display.update()
+    
 #menu
-   
 def main_menu():
     
     WIDTH, HEIGHT = 640 ,480
