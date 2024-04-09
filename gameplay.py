@@ -92,12 +92,16 @@ class Game:
 
             self.screenshake = max(0,self.screenshake - 1)
 
-            if len(self.enemies):
+            if not len(self.enemies):
                 self.transition+=1
                 if self.transition > 30:
                     self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
-                    if self.level == 1:
-                        endgame(self.screen, self.WINDOW_SIZE)
+                    if self.level == 3:
+                        a = endgame(self.screen, self.WINDOW_SIZE)
+                        if a == "menu":
+                            run = False
+                        if a == "retry":
+                            self.level = -1
                     else:
                         self.load_level(self.level)
             if self.transition<0:
@@ -219,23 +223,49 @@ def endgame(screen, WINDOW_SIZE):
     screen.fill((255, 255, 255))
     font = pygame.font.Font(pygame.font.get_default_font(), 50)
     
-    return_text = font.render("Start", True, (0, 0, 0))
-    you_win_text = font.render("YOU WIN!!!", True, (0, 0, 0))
+    return_menu = retry = (0, 0, 0)
     
-    return_rect = return_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 - 50))
-    you_win_rect = you_win_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 + 50))
+    run = True
+    action = ""
     
-    screen.blit(you_win_text, return_rect)
-    screen.blit(return_text, you_win_rect)
-    
-    
-    
-    while True:
+    while run:
+        
+        you_win_text = font.render("YOU WIN!!!", True, (0, 0, 0))
+        retry_text = font.render("Retry", True, retry)
+        return_text = font.render("Return To Main Menu", True, return_menu)
+        
+        you_win_rect = you_win_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 - 50))
+        retry_rect = retry_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 + 50))
+        return_rect = return_text.get_rect(center=(WINDOW_SIZE[0] // 2, WINDOW_SIZE[1] // 2 + 150))
+        
+        
+        screen.blit(you_win_text, you_win_rect)
+        screen.blit(retry_text, retry_rect)
+        screen.blit(return_text, return_rect)
         
         for event in pygame.event.get():
+            
+            mouse_pos = pygame.mouse.get_pos()
+            
+            if return_rect.collidepoint(mouse_pos):
+                return_menu = (150, 150, 150)
+                if pygame.mouse.get_pressed()[0]:
+                    action = "menu"
+                    run = False
+            else:
+                return_menu = (0, 0, 0)
+                
+            if retry_rect.collidepoint(mouse_pos):
+                retry = (150, 150, 150)
+                if pygame.mouse.get_pressed()[0]:
+                    action = "retry"
+                    run = False
+            
             if event.type == pygame.QUIT:
                 pygame.quit()
+                sys.exit()
             pygame.display.update()
+    return action
     
 #menu
 def main_menu():

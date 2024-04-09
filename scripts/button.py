@@ -11,6 +11,8 @@ class Button():
         
     def draw(self, screen):
         
+        action = False
+        
         #lay vi tri chuot
         pos = pygame.mouse.get_pos()
         
@@ -18,9 +20,13 @@ class Button():
         if self.rect.collidepoint(pos):
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
+                action = True
                 print("clicked")
-                print(self.clicked)
                 
+        if pygame.mouse.get_pressed()[0] == 0:
+            self.clicked = False
         
         #ve nut len man hinh
         screen.blit(self.image, (self.rect.x, self.rect.y))
+        
+        return action
