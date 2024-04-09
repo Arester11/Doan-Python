@@ -201,7 +201,7 @@ class Game:
                                 paused = False     
             if self.transition:
                 transition_surf = pygame.Surface(self.display.get_size())
-                pygame.draw.circle(transition_surf,(255,255,255),(self.display.get_width()//2,self.display.get_height()//2),(30-abs(self.transition))*8)
+                pygame.draw.circle(transition_surf,(255,255,255),(self.display.get_width()//2,self.display.get_height()//2),(30-abs(self.transition))*15)
                 transition_surf.set_colorkey((255,255,255))
                 self.display.blit(transition_surf,(0,0))
 
@@ -216,7 +216,7 @@ class Game:
    
 def main_menu():
     
-    WIDTH, HEIGHT = 1600, 900
+    WIDTH, HEIGHT = 640 ,480
     WINDOW_SIZE = (WIDTH, HEIGHT)
     screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Ninja")
