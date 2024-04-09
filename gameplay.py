@@ -14,14 +14,15 @@ from scripts.button import Button
 from scripts.pausegame import pause_game
 
 class Game:
-    def __init__(self):
+    def __init__(self, WINDOW_SIZE):
         pygame.init()
 
         pygame.display.set_caption('Ninja')
-        self.screen = pygame.display.set_mode((640,480))
+        self.screen = pygame.display.set_mode(WINDOW_SIZE)
 
-        self.display = pygame.Surface((320,240), pygame.SRCALPHA)
-        self.display_2 = pygame.Surface((320,240))
+        self.display = pygame.Surface((WINDOW_SIZE[0] / 2, WINDOW_SIZE[1] / 2), pygame.SRCALPHA)
+        self.display_2 = pygame.Surface((WINDOW_SIZE[0] / 2, WINDOW_SIZE[1] / 2))
+        self.WINDOW_SIZE = WINDOW_SIZE
 
         self.clock = pygame.time.Clock()
 
@@ -87,7 +88,7 @@ class Game:
         run = True
         while run:
             self.display.fill((0,0,0,0))
-            self.display_2.blit(self.assets['background'],(0,0))
+            self.display_2.blit(pygame.transform.scale(self.assets['background'], self.WINDOW_SIZE),(0,0))
 
             self.screenshake = max(0,self.screenshake - 1)
 
@@ -180,9 +181,9 @@ class Game:
                         self.movement[0] = True
                     if event.key==pygame.K_d:
                         self.movement[1]=True
-                    if event.key==pygame.K_w:
-                        self.player.jump()
                     if event.key==pygame.K_SPACE:
+                        self.player.jump()
+                    if event.key==pygame.K_LSHIFT:
                         self.player.dash()
                 if event.type ==pygame.KEYUP:
                     if event.key==pygame.K_a:
@@ -209,13 +210,13 @@ class Game:
             screenskake_offset = (random.random()*self.screenshake - self.screenshake / 2,random.random()*self.screenshake - self.screenshake / 2)
             self.screen.blit(pygame.transform.scale(self.display_2,self.screen.get_size()),(screenskake_offset))
             pygame.display.update()
-            self.clock.tick(90)
+            self.clock.tick(60)
 
 #menu
    
 def main_menu():
     
-    WIDTH, HEIGHT = 640,480
+    WIDTH, HEIGHT = 1600, 900
     WINDOW_SIZE = (WIDTH, HEIGHT)
     screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Ninja")
@@ -249,7 +250,7 @@ def main_menu():
                 start = (150, 150, 150)
                 
                 if pygame.mouse.get_pressed()[0]:
-                    Game().run()
+                    Game(WINDOW_SIZE).run()
             else:
                 start = (0, 0, 0)        
             
