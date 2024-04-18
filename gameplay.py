@@ -17,7 +17,7 @@ class Game:
     def __init__(self, WINDOW_SIZE):
         pygame.init()
 
-        pygame.display.set_caption('Ninja')
+        pygame.display.set_caption('Platformer game')
         self.screen = pygame.display.set_mode(WINDOW_SIZE)
 
         self.display = pygame.Surface((WINDOW_SIZE[0] / 2, WINDOW_SIZE[1] / 2), pygame.SRCALPHA)
@@ -86,6 +86,7 @@ class Game:
     def run(self):
         paused = False
         run = True
+        
         while run:
             self.display.fill((0,0,0,0))
             self.display_2.blit(pygame.transform.scale(self.assets['background'], self.WINDOW_SIZE),(0,0))

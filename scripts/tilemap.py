@@ -19,8 +19,8 @@ PHYSICS_TILES= {'grass','stone'}
 AUTOTILE_TYPES ={'grass','stone'}
 
 class Tilemap:
-    def __init__(self,game,tile_size=16):
-        self.game=game
+    def __init__(self, game, tile_size = 16):
+        self.game = game
         self.tile_size = tile_size
         self.tilemap = {}
         self.offgrid_tiles = []
@@ -95,7 +95,7 @@ class Tilemap:
                 tile['variant'] = AUTOTILE_MAP[neighbors]
 
 
-    def render(self,surf,offset=(0,0)):
+    def render(self, surf, offset = (0,0)):
         for tile in self.offgrid_tiles:
             surf.blit(self.game.assets[tile['type']][tile['variant']],(tile['pos'][0] - offset[0],tile['pos'][1] - offset[1]))
                 
