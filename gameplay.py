@@ -10,7 +10,6 @@ from scripts.tilemap import Tilemap
 from scripts.clouds import Clouds
 from scripts.particle import Particle
 from scripts.spark import Spark
-from scripts.button import Button
 from scripts.pausegame import pause_game
 
 class Game:
