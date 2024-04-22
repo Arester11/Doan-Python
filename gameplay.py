@@ -278,11 +278,13 @@ def main_menu():
     start = (0, 0, 0)
     quit = (0, 0, 0)
     font = pygame.font.Font(pygame.font.get_default_font(), 50)
+    background = load_image('background2.png')
 
     running = True
     while running:
 
         screen.fill((255, 255, 255))
+        screen.blit(pygame.transform.scale(background, WINDOW_SIZE),(0,0))
         start_text = font.render("Start", True, start)
         start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
         screen.blit(start_text, start_rect)
