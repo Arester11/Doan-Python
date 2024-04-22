@@ -92,7 +92,7 @@ class Game:
 
             self.screenshake = max(0,self.screenshake - 1)
 
-            if not len(self.enemies):
+            if len(self.enemies):
                 self.transition+=1
                 if self.transition > 30:
                     self.level = min(self.level + 1, len(os.listdir('data/maps')) - 1)
@@ -222,15 +222,17 @@ class Game:
 def endgame(screen, WINDOW_SIZE):
     screen.fill((255, 255, 255))
     font = pygame.font.Font(pygame.font.get_default_font(), 50)
+    background = load_image("background3.jpg")
     
-    return_menu = retry = (0, 0, 0)
+    return_menu = retry = (255, 255, 255)
     
     run = True
     action = ""
+    screen.blit(pygame.transform.scale(background, WINDOW_SIZE), (0, 0))
     
     while run:
         
-        you_win_text = font.render("YOU WIN!!!", True, (0, 0, 0))
+        you_win_text = font.render("YOU WIN!!!", True, (255, 255, 0))
         retry_text = font.render("Retry", True, retry)
         return_text = font.render("Return To Main Menu", True, return_menu)
         
@@ -253,13 +255,15 @@ def endgame(screen, WINDOW_SIZE):
                     action = "menu"
                     run = False
             else:
-                return_menu = (0, 0, 0)
+                return_menu = (255, 255, 255)
                 
             if retry_rect.collidepoint(mouse_pos):
                 retry = (150, 150, 150)
                 if pygame.mouse.get_pressed()[0]:
                     action = "retry"
                     run = False
+            else:
+                retry = (255, 255, 255)        
             
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -278,18 +282,17 @@ def main_menu():
     start = (0, 0, 0)
     quit = (0, 0, 0)
     font = pygame.font.Font(pygame.font.get_default_font(), 50)
-    background = load_image('background2.png')
-
+    background = load_image('background2.png')   
+    
     running = True
     while running:
-
-        screen.fill((255, 255, 255))
-        screen.blit(pygame.transform.scale(background, WINDOW_SIZE),(0,0))
         start_text = font.render("Start", True, start)
         start_rect = start_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 - 50))
-        screen.blit(start_text, start_rect)
         quit_text = font.render("Quit", True, quit)
         quit_rect = quit_text.get_rect(center=(WIDTH // 2, HEIGHT // 2 + 50))
+
+        screen.blit(pygame.transform.scale(background, WINDOW_SIZE),(0,0))
+        screen.blit(start_text, start_rect)
         screen.blit(quit_text, quit_rect)
         pygame.display.update()
 
@@ -308,7 +311,7 @@ def main_menu():
                 if pygame.mouse.get_pressed()[0]:
                     Game(WINDOW_SIZE).run()
             else:
-                start = (0, 0, 0)        
+                start = (37, 60, 100)        
             
             if quit_rect.collidepoint(mouse_pos):
                 
@@ -319,12 +322,10 @@ def main_menu():
                     pygame.quit()
                     sys.exit()
             else:
-                quit = (0, 0, 0)
+                quit = (16,220,252)
                     
 
 if __name__ == "__main__":
     pygame.init()
     # Mở menu chính
     main_menu()
-# Game().game_menu()
-# Game().run()
